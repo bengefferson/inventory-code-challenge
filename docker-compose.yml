@@ -1,0 +1,28 @@
+
+version: "3.7"
+services:
+  app:
+    build:
+      args:
+        user: benose
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    image: inventory
+    container_name: inventory-app
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+    networks:
+      - inventory
+  phpunit:
+    image: php:7.4-cli
+    restart: unless-stopped
+    volumes:
+      - .:/var/www
+    working_dir: /var/www
+    entrypoint: vendor/bin/phpunit
+networks:
+  inventory:
+    driver: bridge
