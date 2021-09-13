@@ -9,5 +9,8 @@
             "Inventory\\Interfaces\\": "src/interfaces",
             "Inventory\\": "src/"
         }
-      }
+      },
+    "require": {
+        "mathieuviossat/arraytotexttable": "^1.0"
+    }
 }

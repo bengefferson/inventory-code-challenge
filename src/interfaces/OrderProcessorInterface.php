@@ -1,4 +1,6 @@
 <?php
+namespace Inventory\Interfaces;
+
 
 interface OrderProcessorInterface
 {
