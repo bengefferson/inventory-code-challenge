@@ -133,6 +133,15 @@ class OrderProductsTest extends TestCase
         $this->assertEquals($this->productStore->getAllProducts(),$arrayExpected);
     }
 
+    public function testCanOutputErrorMessageToStdoutWhenInvalidOrderListIsGiven()
+    {
+        $arrayOrder = [1=>21,'b'=>5,3=>5,4=>8,5=>3];
+        $list = json_encode($arrayOrder);
+        $expected ="Warning: Order $list skipped because there wasn't enough stock for one or more products or the order was invalid\n";
+        $this->expectOutputString($expected);
+        $this->orderProducts->processOrderList($arrayOrder);
+    }
+
     public function testCanIgnoreAnInvalidOrderListAndDoesNotUpdateStore()
     {
         $arrayOrder = [1=>21,2=>5,3=>5,4=>8,5=>3];

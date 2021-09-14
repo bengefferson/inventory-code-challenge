@@ -66,7 +66,7 @@ class OrderProductsWeekly implements OrderProductsInterface
             }
         }else{
             $list = json_encode($orderList);
-            print_r("Warning: Order $list skipped because there wasn't enough stock for one or more products");
+            print_r("Warning: Order $list skipped because there wasn't enough stock for one or more products or the order was invalid");
             echo "\n";
         }
     }
@@ -94,7 +94,7 @@ class OrderProductsWeekly implements OrderProductsInterface
     {
         $validated = null;
         foreach($orderList as $prodctId => $itemUnits){
-            if($this->orderProduct->getStockLevel($prodctId) >= $itemUnits){
+            if(in_array($prodctId,array_keys($this->productStore->getAllProducts())) && $this->orderProduct->getStockLevel($prodctId) >= $itemUnits){
                 $validated = True;
                 continue;
             }else{
