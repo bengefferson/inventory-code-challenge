@@ -25,6 +25,9 @@ class OrderProductsWeekly implements OrderProductsInterface
      */
     public function processOrders(array $orders): void
     {
+        if(gettype($orders) !='array'){
+            throw new Exception('Orders must be an array of daily orders');
+        }
         $this->processWeekOrders($orders);
     }
 
@@ -38,6 +41,9 @@ class OrderProductsWeekly implements OrderProductsInterface
             throw new Exception('Invalid number of days for the week');
         }
         foreach($weekOrders as $dayOrders){
+            if(gettype($dayOrders) !='array'){
+                throw new Exception('Week orders must contain array day order list');
+            }
             $this->processDayOrders($dayOrders);
         }
     }
@@ -50,6 +56,9 @@ class OrderProductsWeekly implements OrderProductsInterface
     {
         $this->processDailyProductPurchase();
         foreach($dayOrders as $orderList){
+            if(gettype($orderList) !='array'){
+                throw new Exception('Day orders must contain array order list');
+            }
             $this->processOrderList($orderList);
         }
     }
@@ -66,7 +75,7 @@ class OrderProductsWeekly implements OrderProductsInterface
             }
         }else{
             $list = json_encode($orderList);
-            print_r("Warning: Order $list skipped because there wasn't enough stock for one or more products or the order was invalid");
+            print_r("Warning: Order $list skipped because there wasn't enough stock for one or more products or the product does not exist");
             echo "\n";
         }
     }
@@ -94,13 +103,18 @@ class OrderProductsWeekly implements OrderProductsInterface
     {
         $validated = null;
         foreach($orderList as $prodctId => $itemUnits){
-            if(in_array($prodctId,array_keys($this->productStore->getAllProducts())) && $this->productManager->getStockLevel($prodctId) >= $itemUnits){
-                $validated = True;
-                continue;
+            if(gettype($itemUnits) =='integer' && gettype($prodctId) =='integer'){
+                if(in_array($prodctId,array_keys($this->productStore->getAllProducts())) && $this->productManager->getStockLevel($prodctId) >= $itemUnits){
+                    $validated = True;
+                    continue;
+                }else{
+                    $validated = False;
+                    break;
+                }
             }else{
-                $validated = False;
-                break;
+                throw new Exception('Item units and product Ids need to be integers');
             }
+            
         }
         return $validated;
     }

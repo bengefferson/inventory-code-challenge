@@ -137,7 +137,7 @@ class OrderProductsTest extends TestCase
     {
         $arrayOrder = [1=>21,'b'=>5,3=>5,4=>8,5=>3];
         $list = json_encode($arrayOrder);
-        $expected ="Warning: Order $list skipped because there wasn't enough stock for one or more products or the order was invalid\n";
+        $expected ="Warning: Order $list skipped because there wasn't enough stock for one or more products or the product does not exist\n";
         $this->expectOutputString($expected);
         $this->orderProducts->processOrderList($arrayOrder);
     }
