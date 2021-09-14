@@ -135,10 +135,10 @@ git clone git@github.com:bengefferson/inventory-code-challenge.git
 docker-compose up -d app
 ```
 
-- Update dependencies by running the following commands:
+- Install dependencies by running the following commands:
 
 ```plain
-docker-compose exec app composer update
+docker-compose exec app composer install
 ```
 
 
@@ -155,7 +155,7 @@ docker-compose exec app php index.php name_of_file.json
 - To run the example file 'input/orders-sample.json', type the following command:
 
 ```plain
-docker-compose exec app php simulate.php orders-sample.json
+docker-compose exec app php index.php orders-sample.json
 ```
 
 
