@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Inventory;
 
-use Inventory\Interfaces\OrderProductInterface;
+use Inventory\Interfaces\ProductManagementInterface;
 use Inventory\Interfaces\OrderProductsInterface;
 use Inventory\Interfaces\ProductsStoreInterface;
 use Exception;
@@ -10,12 +10,12 @@ use Exception;
 //Class that handles the order process for all orders in a week and maintains a summary for all products
 class OrderProductsWeekly implements OrderProductsInterface
 {
-    protected $product;
+    protected $productManager;
     protected $productStore;
 
-    public function __construct(OrderProductInterface $orderProduct, ProductsStoreInterface $productStore)
+    public function __construct(ProductManagementInterface $productManager, ProductsStoreInterface $productStore)
     {
-        $this->orderProduct = $orderProduct;
+        $this->productManager = $productManager;
         $this->productStore = $productStore;
     }
 
@@ -62,7 +62,7 @@ class OrderProductsWeekly implements OrderProductsInterface
     {
         if ($this->validateOrderList($orderList)){
             foreach($orderList as $prodctId => $itemUnits){
-                $this->orderProduct->updateSoldTotal($prodctId, $itemUnits);
+                $this->productManager->updateSoldTotal($prodctId, $itemUnits);
             }
         }else{
             $list = json_encode($orderList);
@@ -78,9 +78,9 @@ class OrderProductsWeekly implements OrderProductsInterface
     public function processDailyProductPurchase(): void
     {
         foreach(array_keys($this->productStore->getAllProducts()) as $productId){
-            $this->orderProduct->updatePurchasedReceivedTotal($productId);
-            if($this->orderProduct->getPurchasedPendingWait($productId) != 0 && $this->orderProduct->getPurchasedPendingWait($productId) < Config::MAX_WAIT_TIME){
-                $this->orderProduct->updatePurchasedPendingWait($productId);
+            $this->productManager->updatePurchasedReceivedTotal($productId);
+            if($this->productManager->getPurchasedPendingWait($productId) != 0 && $this->productManager->getPurchasedPendingWait($productId) < Config::MAX_WAIT_TIME){
+                $this->productManager->updatePurchasedPendingWait($productId);
             }
         }
     }
@@ -94,7 +94,7 @@ class OrderProductsWeekly implements OrderProductsInterface
     {
         $validated = null;
         foreach($orderList as $prodctId => $itemUnits){
-            if(in_array($prodctId,array_keys($this->productStore->getAllProducts())) && $this->orderProduct->getStockLevel($prodctId) >= $itemUnits){
+            if(in_array($prodctId,array_keys($this->productStore->getAllProducts())) && $this->productManager->getStockLevel($prodctId) >= $itemUnits){
                 $validated = True;
                 continue;
             }else{

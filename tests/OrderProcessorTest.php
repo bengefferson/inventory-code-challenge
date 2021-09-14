@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Test;
 
-use Inventory\OrderProduct;
+use Inventory\ProductManager;
 use Inventory\ProductsStore;
 use Inventory\OutputAsciiTableSummary;
 use Inventory\OrderProcessor;
@@ -19,8 +19,8 @@ class OrderProcessorTest extends TestCase
         parent::setUp();
         $this->summary = $this->mock(OutputAsciiTableSummary::class);
         $this->productStore = $this->mock(ProductsStore::class);
-        $this->orderProduct = $this->mock(OrderProduct::class, [$this->productStore]);
-        $this->orderProducts = $this->mock(OrderProductsWeekly::class, [$this->orderProduct, $this->productStore]);
+        $this->productManager = $this->mock(ProductManager::class, [$this->productStore]);
+        $this->orderProducts = $this->mock(OrderProductsWeekly::class, [$this->productManager, $this->productStore]);
         $this->process = $this->mock(OrderProcessor::class, [$this->orderProducts, $this->summary]);
     }
 

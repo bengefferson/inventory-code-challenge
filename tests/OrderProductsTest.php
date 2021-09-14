@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Test;
 
-use Inventory\OrderProduct;
+use Inventory\ProductManager;
 use Inventory\ProductsStore;
 use Inventory\OrderProductsWeekly;
 use Test\TestCase;
@@ -16,8 +16,8 @@ class OrderProductsTest extends TestCase
     {
         parent::setUp();
         $this->productStore = $this->mock(ProductsStore::class);
-        $this->orderProduct = $this->mock(OrderProduct::class, [$this->productStore]);
-        $this->orderProducts = $this->mock(OrderProductsWeekly::class, [$this->orderProduct, $this->productStore]);
+        $this->productManager = $this->mock(ProductManager::class, [$this->productStore]);
+        $this->orderProducts = $this->mock(OrderProductsWeekly::class, [$this->productManager, $this->productStore]);
     }
 
     public function testReturnsExpectedOrderSummaryFromStore()
@@ -74,13 +74,13 @@ class OrderProductsTest extends TestCase
     {
         $this->productStore->setProductKeyValue(1, 'pending', 20);
         $this->productStore->setProductKeyValue(1, 'pending_wait', 2);
-        $this->assertEquals($this->orderProduct->getPurchasedPendingWait(1),2);
-        $this->assertEquals($this->orderProduct->getPurchasedReceivedTotal(1),0);
-        $this->assertEquals($this->orderProduct->getPurchasedPendingTotal(1),20);
+        $this->assertEquals($this->productManager->getPurchasedPendingWait(1),2);
+        $this->assertEquals($this->productManager->getPurchasedReceivedTotal(1),0);
+        $this->assertEquals($this->productManager->getPurchasedPendingTotal(1),20);
         $this->orderProducts->processDailyProductPurchase();
-        $this->assertEquals($this->orderProduct->getPurchasedPendingWait(1),0);
-        $this->assertEquals($this->orderProduct->getPurchasedReceivedTotal(1),20);
-        $this->assertEquals($this->orderProduct->getPurchasedPendingTotal(1),0);
+        $this->assertEquals($this->productManager->getPurchasedPendingWait(1),0);
+        $this->assertEquals($this->productManager->getPurchasedReceivedTotal(1),20);
+        $this->assertEquals($this->productManager->getPurchasedPendingTotal(1),0);
     }
 
     public function testCanProcessAValidOrderListAndUpdateStoreAsExpected()

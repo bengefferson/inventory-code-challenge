@@ -2,12 +2,12 @@
 declare(strict_types=1);
 namespace Inventory;
 
-use Inventory\Interfaces\OrderProductInterface;
+use Inventory\Interfaces\ProductManagementInterface;
 use Inventory\Interfaces\ProductsStoreInterface;
 use Inventory\Config;
 
-//Class that handles the the order of a particular produuct and manages the inventory
-class OrderProduct implements OrderProductInterface
+//Class that handles the managemnt of a products in the product store
+class ProductManager implements ProductManagementInterface
 {
     protected $productStore;
 

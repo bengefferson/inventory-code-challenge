@@ -4,15 +4,15 @@ declare(strict_types=1);
 require 'vendor/autoload.php';
 
 use Inventory\OrderProcessor;
-use Inventory\OrderProduct;
+use Inventory\ProductManager;
 use Inventory\OrderProductsWeekly;
 use Inventory\OutputAsciiTableSummary;
 use Inventory\ProductsStore;
 
 
 $productStore = new ProductsStore;
-$orderProduct = new OrderProduct($productStore);
-$orderProducts = new OrderProductsWeekly($orderProduct, $productStore);
+$productManager = new ProductManager($productStore);
+$orderProducts = new OrderProductsWeekly($productManager, $productStore);
 $summary = new OutputAsciiTableSummary;
 $processOrder = new OrderProcessor($orderProducts, $summary);
 
