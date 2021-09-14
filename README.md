@@ -116,3 +116,53 @@ If you're project needs any dependencies please use [Composer](https://getcompos
 Its up to you if you wish to include any utility libraries.
 
 Though to keep things simple you should not use any Php frameworks, or databases to store stock levels, everything should be stored in memory at runtime. 
+
+## SetUp
+
+- The host computer must have docker and docker-compose installed and running.
+
+- Clone this repository:
+
+```plain
+git clone git@github.com:bengefferson/inventory-code-challenge.git
+```
+
+- cd to inventory-code-challenge
+
+- Bring up docker-compose using the command:
+
+```plain
+docker-compose up -d app
+```
+
+- Update dependencies by running the following commands:
+
+```plain
+docker-compose exec app composer update
+```
+
+
+## Running Simulation
+
+- To run the application, create a json file that has 7 arrays representing the 7 days of the week in the /input directory (an example already exists)
+
+- Run the following command:
+
+```plain
+docker-compose exec app php index.php name_of_file.json
+```
+
+- To run the example file 'input/orders-sample.json', type the following command:
+
+```plain
+docker-compose exec app php simulate.php orders-sample.json
+```
+
+
+## Running Test Suite
+
+- Run the test suite with the following command:
+
+```plain
+docker-compose run phpunit --testdox tests
+```

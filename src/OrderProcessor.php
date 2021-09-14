@@ -35,7 +35,7 @@ class OrderProcessor implements OrderProcessorInterface
     {
         $chunkSize = Config::FILE_CHUNK_SIZE;
         try{
-            if(file_exists(Config::INPUT_FILE_PATH.'/'.$filePath)){
+            if(file_exists(Config::INPUT_FILE_PATH.'/'.$filePath) && pathinfo($filePath)['extension'] == 'json'){
                 $handle = fopen($filePath, "r", true) or die('Invalid input file');
                 $contents="";
                 while(!feof($handle)){
@@ -43,8 +43,12 @@ class OrderProcessor implements OrderProcessorInterface
                 }
                 fclose($handle);
                 $orders = json_decode($contents, true);
-                $this->orderProducts->processOrders($orders);
-                $this->summary->echoSummary($this->orderProducts->orderSummary());
+                if (json_last_error() == 0){
+                    $this->orderProducts->processOrders($orders);
+                    $this->summary->echoSummary($this->orderProducts->orderSummary());
+                }else{
+                    throw new Exception('Invalid json file');
+                } 
             }else{
                 throw new Exception('Invalid input file, please enter valid file');
             }

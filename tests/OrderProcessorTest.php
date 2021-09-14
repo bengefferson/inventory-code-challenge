@@ -30,4 +30,12 @@ class OrderProcessorTest extends TestCase
         $this->expectOutputString($expected);
         $this->process->processFromJson('invalid.json');
     }
+
+    public function testExceptionIsPrintedToStdoutWhenInvalidFileExtensionGiven()
+    {
+        $expected ="Invalid input file, please enter valid file\n";
+        $this->expectOutputString($expected);
+        $this->process->processFromJson('invalid.txt');
+    }
+
 }
