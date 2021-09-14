@@ -26,9 +26,9 @@ class ProductsStore implements ProductsStoreInterface
     /**
      * @param int $productId
      * @param string $key
-     * @return int
+     * @return mixed
      */
-    public function getProductKeyValue(int $productId, string $key): int
+    public function getProductKeyValue(int $productId, string $key): mixed
     {
         return $this->products[$productId][$key];
     }

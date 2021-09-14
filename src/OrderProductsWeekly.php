@@ -65,7 +65,8 @@ class OrderProductsWeekly implements OrderProductsInterface
                 $this->orderProduct->updateSoldTotal($prodctId, $itemUnits);
             }
         }else{
-            print_r("Warning: Order $orderList skipped because there wasn't enough stock for one or more products");
+            $list = json_encode($orderList);
+            print_r("Warning: Order $list skipped because there wasn't enough stock for one or more products");
             echo "\n";
         }
     }

@@ -19,8 +19,8 @@ interface ReadFromStoreInterface
     /**
      * @param int $productId
      * @param string $key
-     * @return int
+     * @return mixed
      */
-    public function getProductKeyValue(int $productId, string $key): int;
+    public function getProductKeyValue(int $productId, string $key): mixed;
 
 }

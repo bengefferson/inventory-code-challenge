@@ -24,9 +24,10 @@ class OrderProcessorTest extends TestCase
         $this->process = $this->mock(OrderProcessor::class, [$this->orderProducts, $this->summary]);
     }
 
-    public function testExceptionIsThrownWhenInvalidFilePathGiven()
+    public function testExceptionIsPrintedToStdoutWhenInvalidFilePathGiven()
     {
-        $this->expectException(Exception::class);
+        $expected ="Invalid input file, please enter valid file\n";
+        $this->expectOutputString($expected);
         $this->process->processFromJson('invalid.json');
     }
 }
